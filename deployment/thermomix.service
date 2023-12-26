@@ -1,0 +1,15 @@
+# thermomix.service
+[Unit]
+Description=Thermomix
+After=network.target,nginx.service
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/
+ExecStart=gunicorn -k uvicorn.workers.UvicornWorker thermomix.serve:app
+User=root
+Group=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

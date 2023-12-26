@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>Thermomix Henryka</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <h1>ThermoMix 2024</h1>
+    <button id="start">Włącz odczyt w czasie rzeczywistym</button>
+    <button id="stop">Wyłącz odczyt</button>
+    <h2>Status:</h2>
+    <div id="status">wyłączony</div>
+    <h2>Czujniki:</h2>
+    <ul>
+    {% for name, data in devices.items() %}
+        <li class="device">
+            <div class="name">
+                <strong>{{ name }}</strong> (adres fizyczny: {{ data['address'] }})
+            </div>
+            <div class="measurement">
+                <strong>
+                    Odczyt: <span id="measure-{{ data['address'] }}">brak</span>
+                </strong>
+            </div>
+        </li>
+    {% else %}
+        <li>Brak zdefiniowanych czujników.</li>
+    {% endfor %}
+    </ul>
+    <script type="text/javascript">
+        let nIntervId;
+
+        function start() {
+            // check if an interval has already been set up
+            if (!nIntervId) {
+                nIntervId = setInterval(measure, 1000);
+            }
+            document.getElementById("status").innerHTML = "włączony";
+        }
+
+        function measure() {
+            let url = '/status';
+
+            fetch(url)
+                .then(res => res.json())
+                .then(out => {
+                    if (out.detail) {
+                        document.getElementById("status").innerHTML = "Error: " + out.detail;
+                        return;
+                    }
+
+                    document.getElementById("status").innerHTML = "OK";
+                    for (let key in out) {
+                        document.getElementById("measure-" + out[key].address).innerHTML = out[key].value;
+                    }
+                })
+                .catch(err => {
+                    document.getElementById("status").innerHTML = "Error: " + err;
+                    throw err;
+                });
+        }
+
+        function stop() {
+            clearInterval(nIntervId);
+            // release our intervalID from the variable
+            nIntervId = null;
+            document.getElementById("status").innerHTML = "wyłączony";
+        }
+
+        document.getElementById("start").addEventListener("click", start);
+        document.getElementById("stop").addEventListener("click", stop);
+    </script>
+</body>
+</html>
