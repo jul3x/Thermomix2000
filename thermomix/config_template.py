@@ -1,9 +1,16 @@
 DEVICES = {
     "<name>": {
         "address": 0,
+
+        # position on central heating system schema
+        "x": 100,
+        "y": 100,
     },
     "<name2>": {
         "address": 1,
+
+        "x": 200,
+        "y": 200,
     },
 }
 

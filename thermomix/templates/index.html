@@ -4,28 +4,24 @@
     <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
 </head>
 <body>
-    <h1>ThermoMix 2024</h1>
+    <div class="container">
+    <h1>ThermoMix 2000</h1>
     <button id="start">Włącz odczyt w czasie rzeczywistym</button>
     <button id="stop">Wyłącz odczyt</button>
     <h2>Status:</h2>
     <div id="status">wyłączony</div>
-    <h2>Czujniki:</h2>
-    <ul>
-    {% for name, data in devices.items() %}
-        <li class="device">
-            <div class="name">
-                <strong>{{ name }}</strong> (adres fizyczny: {{ data['address'] }})
-            </div>
-            <div class="measurement">
+
+    <h2>Schemat:</h2>
+    <div class="dashboard" style="background-image: url({{ url_for('static', path='/dashboard.jpg') }})">
+        {% for name, data in devices.items() %}
+            <div class="measurement" style="left: {{ data.x }}px; bottom: {{ data.y }}px">
                 <strong>
-                    Odczyt: <span id="measure-{{ data['address'] }}">brak</span>
+                    <span id="measure-{{ data['address'] }}">brak</span>
                 </strong>
             </div>
-        </li>
-    {% else %}
-        <li>Brak zdefiniowanych czujników.</li>
-    {% endfor %}
-    </ul>
+        {% endfor %}
+    </div>
+
     <script type="text/javascript">
         let nIntervId;
 
@@ -50,7 +46,8 @@
 
                     document.getElementById("status").innerHTML = "OK";
                     for (let key in out) {
-                        document.getElementById("measure-" + out[key].address).innerHTML = out[key].value;
+                        document.getElementById("measure-" + out[key].address).innerHTML =
+                            out[key].value + ' ºC';
                     }
                 })
                 .catch(err => {
@@ -69,5 +66,6 @@
         document.getElementById("start").addEventListener("click", start);
         document.getElementById("stop").addEventListener("click", stop);
     </script>
+    </div>
 </body>
 </html>
