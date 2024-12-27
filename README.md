@@ -4,7 +4,6 @@ SmartHome web server and controller for local central heating systems.
 
 For now handles visualization of measurements from CH341 MODBUS RTU temperature sensors. 
 
-
 ## Usage
 
 Use microcomputer with connection to MODBUS with sensors.
@@ -19,3 +18,13 @@ Debian Bookworm with Python 3.11 tested.
 7. Use config_template.py to create config.py with map of devices.
 8. Provide dashboard.jpg file in `static` directory with central heating system schema.
 9. Serve application (possibly as a daemon) using `gunicorn -k uvicorn.workers.UvicornWorker thermomix.serve:app``
+
+## AC Watchdog usage
+
+AC Watchdog is a simple script that checks status of the MODBUS connected relay. 
+It notifies operator via SMTP if there is power outage in the house.
+
+1. Install requirements.txt
+2. Copy script from `ac_watchdog` to `/srv/ac_watchdog`
+3. Fill every needed info in `config.py` using `config_template.py`
+4. Deploy daemon as `ac_watchdog.service`

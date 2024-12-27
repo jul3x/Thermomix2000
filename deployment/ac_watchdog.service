@@ -1,0 +1,15 @@
+# ac_watchdog.service
+[Unit]
+Description=AC Watchdog notifier
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/
+ExecStart=/usr/bin/python3 ac_watchdog.main
+User=root
+Group=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
