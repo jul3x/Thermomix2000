@@ -22,6 +22,9 @@
         {% endfor %}
     </div>
 
+    <h2>Logi {{ watchdog_service }}:</h2>
+    <pre class="logs" id="watchdog-logs">{{ watchdog_logs }}</pre>
+
     <script type="text/javascript">
         let nIntervId;
 
@@ -62,6 +65,9 @@
             nIntervId = null;
             document.getElementById("status").innerHTML = "wyłączony";
         }
+
+        const logs = document.getElementById("watchdog-logs");
+        logs.scrollTop = logs.scrollHeight;
 
         document.getElementById("start").addEventListener("click", start);
         document.getElementById("stop").addEventListener("click", stop);
