@@ -40,6 +40,7 @@ button {
     border: 1px solid rgb(100, 120, 120);
     padding: 10px;
     margin: 5px;
+    cursor: pointer;
 }
 
 h1 {
